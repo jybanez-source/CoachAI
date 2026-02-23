@@ -246,7 +246,7 @@ if st.session_state.page == "home":
 st.markdown("""
 > *"La innovación y el análisis hacen mejor a los jugadores."*  
 > — **Pep Guardiola**
-"""
+""")
 st.write("**CoachAI** combina datos + modelo para recomendar tácticas y generar entrenamientos adaptados a tu equipo.")
 
     # estadísticas reales del Excel (si está disponible)
@@ -842,4 +842,5 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
+
 

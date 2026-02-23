@@ -270,7 +270,7 @@ try:
 
         st.caption(f"Patrón top: **{top_patron}**")
 
-    except Exception:
+except Exception:
         st.info("Para ver estadísticas en la portada, asegúrate de tener el Excel en la carpeta.")
 
     st.write("")
@@ -842,6 +842,7 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
+
 
 
 

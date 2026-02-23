@@ -9,50 +9,47 @@ import streamlit as st
 # =========================
 st.set_page_config(page_title="CoachAI", page_icon="⚽", layout="wide")
 
-st.markdown("""
+# --- SILICON VALLEY THEME (CSS) ---
+st.markdown(
+    """
 <style>
-
-/* Fondo general con degradado oscuro premium */
 .stApp {
     background: linear-gradient(135deg, #0f172a 0%, #0b1120 100%);
     color: white;
 }
-
-/* Quitar borde feo de Streamlit */
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
-/* Títulos más grandes y elegantes */
 h1, h2, h3 {
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
 }
 
-/* Botones más modernos */
 div.stButton > button {
     border-radius: 12px;
-    background-color: #1f2937;
+    background-color: #111827;
     color: white;
-    border: 1px solid #374151;
-    transition: all 0.2s ease-in-out;
+    border: 1px solid #1f2937;
+    transition: all 0.15s ease-in-out;
+    padding: 0.65rem 1rem;
 }
 
 div.stButton > button:hover {
     background-color: #2563eb;
     border-color: #2563eb;
-    transform: scale(1.02);
+    transform: translateY(-1px);
 }
 
-/* Métricas más limpias */
 [data-testid="metric-container"] {
-    background-color: #111827;
+    background-color: rgba(17, 24, 39, 0.85);
     border: 1px solid #1f2937;
-    padding: 10px;
-    border-radius: 12px;
+    padding: 12px;
+    border-radius: 14px;
 }
-
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 DATA_PATH = "jugadas_futbol.xlsx"
 MODEL_PATH = "modelo_final.joblib"
@@ -63,6 +60,7 @@ MODEL_PATH = "modelo_final.joblib"
 # =========================
 if "page" not in st.session_state:
     st.session_state.page = "home"
+
 
 def go(page: str):
     st.session_state.page = page
@@ -95,12 +93,13 @@ def load_data(path: str) -> pd.DataFrame:
         lambda x: "finaliza" if x in ["gol", "tiro"] else "no_finaliza"
     )
 
-    # grupo pases (para recomendaciones y entrenamiento)
+    # grupo pases
     df["grupo_pases"] = pd.cut(
         df["pases"],
         bins=[-1, 3, 8, 50],
-        labels=["directa (0-3)", "media (4-8)", "elaborada (9+)"]
+        labels=["directa (0-3)", "media (4-8)", "elaborada (9+)"],
     )
+
     return df
 
 
@@ -112,7 +111,7 @@ def load_model(path: str):
 
 
 def pct(x: float) -> str:
-    return f"{x*100:.1f}%"
+    return f"{x * 100:.1f}%"
 
 
 def representative_passes(grupo_pases: str) -> int:
@@ -125,13 +124,17 @@ def representative_passes(grupo_pases: str) -> int:
 
 
 def prob_from_model(clf, liga: str, equipo: str, zona: str, jugada: str, pases: int):
-    X = pd.DataFrame([{
-        "liga": liga,
-        "equipo": equipo,
-        "zona": zona,
-        "jugada": jugada,
-        "pases": int(pases)
-    }])
+    X = pd.DataFrame(
+        [
+            {
+                "liga": liga,
+                "equipo": equipo,
+                "zona": zona,
+                "jugada": jugada,
+                "pases": int(pases),
+            }
+        ]
+    )
 
     pred = clf.predict(X)[0]
     prob = None
@@ -144,12 +147,11 @@ def prob_from_model(clf, liga: str, equipo: str, zona: str, jugada: str, pases: 
 
 
 def combo_prob_finaliza(df: pd.DataFrame) -> pd.Series:
-    """P(finaliza) por (zona, jugada, grupo_pases)"""
     combo = (
         df.groupby(["zona", "jugada", "grupo_pases"])["finaliza"]
-          .value_counts(normalize=True)
-          .unstack()
-          .fillna(0)
+        .value_counts(normalize=True)
+        .unstack()
+        .fillna(0)
     )
     if "finaliza" not in combo.columns:
         combo["finaliza"] = 0.0
@@ -170,7 +172,6 @@ def top_combos(p_finaliza: pd.Series, zonas_ok: set, jugadas_ok: set, k: int = 8
 
 
 def pick_planA_planB(p_finaliza: pd.Series, ritmo: str, fortaleza: str, estilo: str):
-    # filtros por perfil
     zonas = {"centro", "banda"}
     if fortaleza == "centro":
         zonas = {"centro"}
@@ -199,13 +200,11 @@ def pick_planA_planB(p_finaliza: pd.Series, ritmo: str, fortaleza: str, estilo: 
     planA = lista[0]
     planB = None
     for cand in lista[1:]:
-        # que sea realmente diferente (zona o jugada o grupo)
         if (cand[0] != planA[0]) or (cand[1] != planA[1]) or (cand[2] != planA[2]):
             planB = cand
             break
 
     if planB is None:
-        # fallback global distinto
         top_global = p_finaliza.sort_values(ascending=False).head(30)
         for idx, v in top_global.items():
             cand = (idx[0], idx[1], idx[2], float(v))
@@ -239,18 +238,24 @@ if "plan_seed" not in st.session_state:
 
 
 # =========================
-# PAGE: HOME (MEJORADO)
+# PAGE: HOME
 # =========================
 if st.session_state.page == "home":
     st.markdown("# 🚀 Bienvenido a la revolución del fútbol")
-st.markdown("""
+
+    st.markdown(
+        """
 > *"La innovación y el análisis hacen mejor a los jugadores."*  
 > — **Pep Guardiola**
-""")
-st.write("**CoachAI** combina datos + modelo para recomendar tácticas y generar entrenamientos adaptados a tu equipo.")
+"""
+    )
+
+    st.markdown("### ⚽ Datos. Modelo. Decisión.")
+    st.caption("Una plataforma que transforma análisis táctico en ventajas competitivas.")
+    st.write("")
 
     # estadísticas reales del Excel (si está disponible)
-try:
+    try:
         df_home = load_data(DATA_PATH)
         n_jugadas = len(df_home)
         tasa_finaliza_global = float((df_home["finaliza"] == "finaliza").mean())
@@ -270,7 +275,7 @@ try:
 
         st.caption(f"Patrón top: **{top_patron}**")
 
-except Exception:
+    except Exception:
         st.info("Para ver estadísticas en la portada, asegúrate de tener el Excel en la carpeta.")
 
     st.write("")
@@ -289,7 +294,7 @@ except Exception:
 
 
 # =========================
-# PAGE: COACH (PLAN A + PLAN B, ENTRENAMIENTO VARIABLE)
+# PAGE: COACH
 # =========================
 if st.session_state.page == "coach":
     top = st.columns([1, 6])
@@ -318,7 +323,6 @@ if st.session_state.page == "coach":
     ligas = sorted(df["liga"].unique().tolist())
     equipos = sorted(df["equipo"].unique().tolist())
 
-    # Inputs (solo perfil, como quieres)
     st.subheader("Perfil del equipo")
     a, b, c = st.columns(3)
     with a:
@@ -330,9 +334,8 @@ if st.session_state.page == "coach":
 
     duracion = st.slider("Duración de la sesión (min)", 60, 90, 75, step=5)
 
-    # Contexto del modelo (sin “inventar”: por defecto usa lo más común del dataset)
     st.subheader("Contexto para el modelo (solo para calcular probabilidad)")
-    st.caption("El perfil manda en la recomendación. Esto solo sirve para que el modelo pueda calcular una probabilidad.")
+    st.caption("El perfil manda en la recomendación. Esto solo sirve para que el modelo calcule probabilidades.")
     usar_contexto_manual = st.checkbox("Elegir liga y equipo manualmente", value=False)
 
     if usar_contexto_manual:
@@ -346,10 +349,9 @@ if st.session_state.page == "coach":
         equipo_sel = str(df["equipo"].mode().iloc[0]) if len(df) else ""
         st.info(f"Contexto automático: liga **{liga_sel}**, equipo **{equipo_sel}**")
 
-    # Plan A + Plan B (desde datos)
+    # Plan A + Plan B
     p_finaliza = combo_prob_finaliza(df)
     planA, planB = pick_planA_planB(p_finaliza, ritmo, fortaleza, estilo)
-
     zonaA, jugadaA, grupoA, probA = planA
     zonaB, jugadaB, grupoB, probB = planB
 
@@ -370,7 +372,6 @@ if st.session_state.page == "coach":
         st.write(f"- **Construcción:** {grupoB}")
         st.write(f"- **Tasa de finalización (datos):** **{pct(probB)}**")
 
-    # Validación del modelo (A y B)
     st.divider()
     st.subheader("Validación del modelo (probabilidad)")
 
@@ -400,11 +401,10 @@ if st.session_state.page == "coach":
         else:
             st.info("El modelo no devuelve probabilidades.")
 
-    # Pizarra táctica (simple y útil)
     st.divider()
     st.subheader("Pizarra táctica")
-    p1, p2 = st.columns([1.1, 1])
 
+    p1, p2 = st.columns([1.1, 1])
     with p1:
         st.markdown("### Principios sugeridos (Plan A)")
         if jugadaA == "contraataque":
@@ -415,7 +415,7 @@ if st.session_state.page == "coach":
             st.write("- Paciencia + movilidad para generar línea de pase.")
             st.write("- Cambios de orientación y tercer hombre.")
             st.write("- Preparar el último pase antes de finalizar.")
-        else:  # presion
+        else:
             st.write("- Presión tras pérdida (5 segundos).")
             st.write("- Robo alto y finalización rápida.")
             st.write("- Compactar para recuperar cerca del área rival.")
@@ -436,23 +436,22 @@ if st.session_state.page == "coach":
         notas = st.text_area(
             "Escribe movimientos, roles y flechas en texto",
             height=240,
-            placeholder="Ej: Extremo fija, interior ataca espacio.\nFlechas: RB -> MC -> MP -> 9 -> tiro"
+            placeholder="Ej: Extremo fija, interior ataca espacio.\nFlechas: RB -> MC -> MP -> 9 -> tiro",
         )
         st.download_button(
             "⬇️ Descargar pizarra (.txt)",
             data=notas.encode("utf-8"),
             file_name="pizarra_tactica.txt",
             mime="text/plain",
-            use_container_width=True
+            use_container_width=True,
         )
 
     # =========================
-    # ENTRENAMIENTO VARIABLE (basado en Plan A)
+    # ENTRENAMIENTO VARIABLE (Plan A)
     # =========================
     st.divider()
     st.subheader(f"Plan de entrenamiento ({duracion} min) — Basado en Plan A")
 
-    # Seed para variar tareas sin que sea siempre lo mismo
     cseed = st.columns([1, 1, 3])
     with cseed[0]:
         if st.button("🔁 Generar otra sesión"):
@@ -463,14 +462,12 @@ if st.session_state.page == "coach":
 
     rng = random.Random(st.session_state.plan_seed)
 
-    # bloques base (escalan con duración)
     base = {"cal": 10, "tec": 12, "p1": 16, "p2": 16, "fin": 12, "cool": 7}
     factor = duracion / sum(base.values())
     t = {k: max(5, int(round(v * factor))) for k, v in base.items()}
     drift = duracion - sum(t.values())
     t["p2"] = max(5, t["p2"] + drift)
 
-    # regla de pases a partir del grupoA
     gtxt = str(grupoA)
     if "0-3" in gtxt:
         regla_pases = "máximo 3 pases antes de finalizar"
@@ -480,10 +477,10 @@ if st.session_state.page == "coach":
         regla_pases = "mínimo 9 pases antes de finalizar"
 
     st.markdown("### 🎯 Objetivo")
-    st.write(f"Entrenar el patrón **Plan A**: **{jugadaA} por {zonaA}** con **{grupoA}** (regla: {regla_pases}).")
+    st.write(
+        f"Entrenar el patrón **Plan A**: **{jugadaA} por {zonaA}** con **{grupoA}** (regla: {regla_pases})."
+    )
 
-    # Biblioteca de tareas (varía según estilo y zona)
-    # (No dependemos de equipos reales, solo del perfil + Plan A)
     calentamientos = [
         "Rondo 5v2/6v2: al recuperar, 3 segundos para pase hacia delante.",
         "Rondo con comodines: puntúa doble si progresas por la zona objetivo.",
@@ -535,23 +532,7 @@ if st.session_state.page == "coach":
         "Encadenar 3 presiones buenas = bonus.",
     ]
 
-    # Elegimos biblioteca por estilo input (y dentro variamos aleatoriamente)
-    if estilo == "posesion":
-        tec_pool = tecnica_posesion
-        p1_pool = principal_posesion
-        p2_pool = principal_posesion
-    elif estilo == "transicion":
-        tec_pool = tecnica_transicion
-        p1_pool = principal_transicion
-        p2_pool = principal_transicion
-    else:  # mezcla
-        # Mezcla: mitad posesión y mitad transición/presión, pero SIEMPRE basado en Plan A
-        # (El Plan B lo dejamos como alternativa táctica, no como base del entreno)
-        tec_pool = tecnica_posesion + tecnica_transicion
-        p1_pool = principal_posesion
-        p2_pool = principal_transicion
-
-    # Ajuste por jugadaA (Plan A) para que de verdad mande el patrón recomendado
+    # Selección por estilo + ajuste por jugadaA (Plan A manda)
     if jugadaA == "posesion":
         tec_pool = tecnica_posesion
         p1_pool = principal_posesion
@@ -562,27 +543,24 @@ if st.session_state.page == "coach":
         tec_pool = tecnica_presion
         p1_pool = principal_presion
 
-    # Elegimos tareas (varían según seed)
+    if estilo == "posesion":
+        p2_pool = principal_posesion
+    elif estilo == "transicion":
+        p2_pool = principal_transicion
+    else:
+        # mezcla: que p2 varíe (si p1 es posesión, p2 transición, etc.)
+        p2_pool = principal_transicion + principal_posesion + principal_presion
+
     cal = rng.choice(calentamientos)
     tec = rng.choice(tec_pool)
     p1 = rng.choice(p1_pool)
+    p2 = rng.choice(p2_pool)
 
-    # P2 depende del estilo (si mezcla, es distinto a P1)
-    if estilo == "mezcla":
-        # escoger del pool de transición si p1 era posesión, o viceversa
-        if p1 in principal_posesion:
-            p2 = rng.choice(principal_transicion)
-        else:
-            p2 = rng.choice(principal_posesion)
-    else:
-        p2 = rng.choice(p2_pool)
-
-    # Ajuste por zonaA (centro/banda) para darle coherencia
-    extra_zona = ""
-    if zonaA == "centro":
-        extra_zona = "Extra: puntúa doble si la progresión pasa por interior antes del tiro."
-    else:
-        extra_zona = "Extra: puntúa doble si la finalización viene de banda (desborde/centro/pase atrás)."
+    extra_zona = (
+        "Extra: puntúa doble si la progresión pasa por interior antes del tiro."
+        if zonaA == "centro"
+        else "Extra: puntúa doble si la finalización viene de banda (desborde/centro/pase atrás)."
+    )
 
     st.markdown("### 1) Calentamiento")
     st.write(f"**{t['cal']} min** — {cal}")
@@ -608,7 +586,7 @@ if st.session_state.page == "coach":
         st.write("- Ataque organizado: último pase + tiro. No precipitar.")
     else:
         st.write("- Robo alto + tiro en pocos segundos.")
-    st.write(f"Regla: **{regla_pases}** (adaptada al patrón).")
+    st.write(f"Regla: **{regla_pases}**.")
 
     st.markdown("### 6) Vuelta a la calma")
     st.write(f"**{t['cool']} min** — Trote suave + movilidad + estiramientos.")
@@ -623,7 +601,7 @@ if st.session_state.page == "coach":
 
 
 # =========================
-# PAGE: GAMES (RETOS DESDE FILA REAL + QUIZ VARIADO)
+# PAGE: GAMES
 # =========================
 if st.session_state.page == "games":
     top = st.columns([1, 6])
@@ -652,47 +630,58 @@ if st.session_state.page == "games":
 
     tab1, tab2 = st.tabs(["🧠 Quiz táctico", "🎯 Adivina la probabilidad"])
 
-    # ---------- QUIZ ----------
     with tab1:
         st.subheader("Quiz táctico (varía en cada intento)")
 
-        # Banco de preguntas (no siempre las mismas, se baraja)
         bank = [
-            ("En transición ofensiva, ¿qué es clave en los primeros segundos?",
-             ["Esperar a que suban todos", "Atacar el espacio mirando hacia delante", "Dar siempre pases hacia atrás"],
-             1,
-             "En transición el rival suele estar desordenado: atacar el espacio aumenta opciones."),
-            ("Si tu objetivo es progresar por el centro, ¿qué ayuda más?",
-             ["Pared/tercer hombre y pase interior", "Centros desde muy lejos", "Conservar sin intención"],
-             0,
-             "El carril central permite paredes/filtrados y tiros desde zonas peligrosas."),
-            ("¿Qué es presión tras pérdida?",
-             ["Replegar siempre", "Presionar inmediatamente tras perder para recuperar", "Sacar rápido de portería"],
-             1,
-             "Presionar tras perder busca recuperar con el rival sin estructura."),
-            ("¿Para qué sirve una regla de pases en un ejercicio?",
-             ["Para castigar", "Para controlar el tipo de ataque y el ritmo", "Para que el juego sea más lento siempre"],
-             1,
-             "Te fuerza a construir o finalizar rápido según el objetivo."),
-            ("¿Qué indicador es más estable para medir mejora ofensiva en tareas?",
-             ["Solo goles", "% de jugadas que acaban en tiro cumpliendo condición", "Posesión total"],
-             1,
-             "El tiro es más estable que el gol, que depende de más factores."),
-            ("Si el equipo es lento, ¿qué suele ser más coherente?",
-             ["Contraataque directo 0–3 pases todo el rato", "Posesión organizada y progresión paciente", "Solo balones largos"],
-             1,
-             "Equipo lento suele rendir mejor con organización y estructura."),
-            ("Si tu fortaleza es banda, ¿qué finalización es típica?",
-             ["Centro tenso o pase atrás", "Siempre tiro desde 40 metros", "Nunca usar banda"],
-             0,
-             "En banda son comunes desborde, centro y pase atrás."),
+            (
+                "En transición ofensiva, ¿qué es clave en los primeros segundos?",
+                ["Esperar a que suban todos", "Atacar el espacio mirando hacia delante", "Dar siempre pases hacia atrás"],
+                1,
+                "En transición el rival suele estar desordenado: atacar el espacio aumenta opciones.",
+            ),
+            (
+                "Si tu objetivo es progresar por el centro, ¿qué ayuda más?",
+                ["Pared/tercer hombre y pase interior", "Centros desde muy lejos", "Conservar sin intención"],
+                0,
+                "El carril central permite paredes/filtrados y tiros desde zonas peligrosas.",
+            ),
+            (
+                "¿Qué es presión tras pérdida?",
+                ["Replegar siempre", "Presionar inmediatamente tras perder para recuperar", "Sacar rápido de portería"],
+                1,
+                "Presionar tras perder busca recuperar con el rival sin estructura.",
+            ),
+            (
+                "¿Para qué sirve una regla de pases en un ejercicio?",
+                ["Para castigar", "Para controlar el tipo de ataque y el ritmo", "Para que el juego sea más lento siempre"],
+                1,
+                "Te fuerza a construir o finalizar rápido según el objetivo.",
+            ),
+            (
+                "¿Qué indicador es más estable para medir mejora ofensiva en tareas?",
+                ["Solo goles", "% de jugadas que acaban en tiro cumpliendo condición", "Posesión total"],
+                1,
+                "El tiro es más estable que el gol, que depende de más factores.",
+            ),
+            (
+                "Si el equipo es lento, ¿qué suele ser más coherente?",
+                ["Contraataque directo 0–3 pases todo el rato", "Posesión organizada y progresión paciente", "Solo balones largos"],
+                1,
+                "Equipo lento suele rendir mejor con organización y estructura.",
+            ),
+            (
+                "Si tu fortaleza es banda, ¿qué finalización es típica?",
+                ["Centro tenso o pase atrás", "Siempre tiro desde 40 metros", "Nunca usar banda"],
+                0,
+                "En banda son comunes desborde, centro y pase atrás.",
+            ),
         ]
 
-        # Preparar orden aleatorio con seed
-        rng = random.Random(st.session_state.quiz_order_seed)
+        rngq = random.Random(st.session_state.quiz_order_seed)
         order = list(range(len(bank)))
-        rng.shuffle(order)
-        selected = order[:5]  # 5 preguntas
+        rngq.shuffle(order)
+        selected = order[:5]
 
         i = st.session_state.quiz_idx
         if i >= len(selected):
@@ -714,7 +703,6 @@ if st.session_state.page == "games":
             q_idx = selected[i]
             q, opts, ans, why = bank[q_idx]
 
-            # Barajar opciones manteniendo respuesta correcta
             pairs = list(enumerate(opts))
             rng_opts = random.Random(st.session_state.quiz_order_seed + i + 999)
             rng_opts.shuffle(pairs)
@@ -746,7 +734,6 @@ if st.session_state.page == "games":
                     st.session_state.quiz_idx += 1
                     st.rerun()
 
-    # ---------- ADIVINA PROB (DESDE FILA REAL) ----------
     with tab2:
         st.subheader("Adivina la probabilidad (retos desde datos reales)")
         st.write("Generamos una situación **real del Excel** y tú apuestas si la probabilidad de finalizar es baja/media/alta.")
@@ -784,8 +771,8 @@ if st.session_state.page == "games":
                     st.warning("El modelo no devuelve probabilidades (solo predicción).")
                 else:
                     st.write(f"Probabilidad (modelo): **{pct(prob)}**")
-
                     bucket = "baja" if prob < 0.40 else ("media" if prob < 0.60 else "alta")
+
                     guessed_bucket = None
                     if guess:
                         guessed_bucket = "baja" if guess.startswith("baja") else ("media" if guess.startswith("media") else "alta")
@@ -805,7 +792,7 @@ if st.session_state.page == "games":
 
 
 # =========================
-# PAGE: HOW IT WORKS
+# PAGE: HOW
 # =========================
 if st.session_state.page == "how":
     top = st.columns([1, 6])
@@ -842,7 +829,3 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
-
-
-
-

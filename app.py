@@ -9,6 +9,51 @@ import streamlit as st
 # =========================
 st.set_page_config(page_title="CoachAI", page_icon="⚽", layout="wide")
 
+st.markdown("""
+<style>
+
+/* Fondo general con degradado oscuro premium */
+.stApp {
+    background: linear-gradient(135deg, #0f172a 0%, #0b1120 100%);
+    color: white;
+}
+
+/* Quitar borde feo de Streamlit */
+header {visibility: hidden;}
+footer {visibility: hidden;}
+
+/* Títulos más grandes y elegantes */
+h1, h2, h3 {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Botones más modernos */
+div.stButton > button {
+    border-radius: 12px;
+    background-color: #1f2937;
+    color: white;
+    border: 1px solid #374151;
+    transition: all 0.2s ease-in-out;
+}
+
+div.stButton > button:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    transform: scale(1.02);
+}
+
+/* Métricas más limpias */
+[data-testid="metric-container"] {
+    background-color: #111827;
+    border: 1px solid #1f2937;
+    padding: 10px;
+    border-radius: 12px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 DATA_PATH = "jugadas_futbol.xlsx"
 MODEL_PATH = "modelo_final.joblib"
 
@@ -198,6 +243,10 @@ if "plan_seed" not in st.session_state:
 # =========================
 if st.session_state.page == "home":
     st.markdown("# 🚀 Bienvenido a la revolución del fútbol")
+st.markdown("""
+> *"La innovación y el análisis hacen mejor a los jugadores."*  
+> — **Pep Guardiola**
+""")
     st.write("**CoachAI** combina datos + modelo para recomendar tácticas y generar entrenamientos adaptados a tu equipo.")
 
     # estadísticas reales del Excel (si está disponible)

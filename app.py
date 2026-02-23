@@ -250,7 +250,7 @@ st.markdown("""
 st.write("**CoachAI** combina datos + modelo para recomendar tácticas y generar entrenamientos adaptados a tu equipo.")
 
     # estadísticas reales del Excel (si está disponible)
-    try:
+try:
         df_home = load_data(DATA_PATH)
         n_jugadas = len(df_home)
         tasa_finaliza_global = float((df_home["finaliza"] == "finaliza").mean())
@@ -842,5 +842,6 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
+
 
 

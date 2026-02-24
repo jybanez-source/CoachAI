@@ -250,7 +250,7 @@ if st.session_state.page == "home":
 """
     )
 
-    st.markdown("### ⚽ Datos. Modelo. Decisión.")
+    st.markdown("### Una plataforma que combina IA, táctica y entrenamiento, con minijuegos para aprender.")
     st.caption("Una plataforma que transforma análisis táctico en ventajas competitivas.")
     st.write("")
 
@@ -829,3 +829,4 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
+

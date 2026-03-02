@@ -250,8 +250,8 @@ if st.session_state.page == "home":
 """
     )
 
-    st.markdown("### Una plataforma que combina IA, táctica y entrenamiento, con minijuegos para aprender.")
-    st.caption("Una plataforma que transforma análisis táctico en ventajas competitivas.")
+    st.markdown("### La herramienta que usa IA para generar planes de entreamiento y tácticas, con minijuegos para aprender  .")
+    st.caption("Una plataforma que ofrece análisis táctico para obtener ventajas competitivas.")
     st.write("")
 
     # estadísticas reales del Excel (si está disponible)
@@ -271,9 +271,9 @@ if st.session_state.page == "home":
         with m2:
             st.metric("Tasa global de finalización", pct(tasa_finaliza_global))
         with m3:
-            st.metric("Patrón top actual", pct(top_prob))
+            st.metric("Tasa de finalización del mejor patrón", pct(top_prob))
 
-        st.caption(f"Patrón top: **{top_patron}**")
+        st.caption(f"Mejor patrón: **{top_patron}**")
 
     except Exception:
         st.info("Para ver estadísticas en la portada, asegúrate de tener el Excel en la carpeta.")
@@ -829,5 +829,6 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
+
 
 

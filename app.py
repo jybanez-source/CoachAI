@@ -7,7 +7,7 @@ import streamlit as st
 # =========================
 # CONFIG (MUST BE FIRST UI)
 # =========================
-st.set_page_config(page_title="CoachAI", page_icon="⚽", layout="wide")
+st.set_page_config(page_title="CoachAI", layout="wide")
 
 # --- SILICON VALLEY THEME (CSS) ---
 st.markdown(
@@ -241,7 +241,7 @@ if "plan_seed" not in st.session_state:
 # PAGE: HOME
 # =========================
 if st.session_state.page == "home":
-    st.markdown("# 🚀 Bienvenido a la revolución del fútbol")
+    st.markdown("# Bienvenido a la revolución del fútbol")
 
     st.markdown(
         """
@@ -281,13 +281,13 @@ if st.session_state.page == "home":
     st.write("")
     c1, c2, c3 = st.columns(3)
     with c1:
-        if st.button("⚽ CoachAI", use_container_width=True):
+        if st.button("CoachAI", use_container_width=True):
             go("coach")
     with c2:
-        if st.button("🎮 Minijuegos", use_container_width=True):
+        if st.button("Minijuegos", use_container_width=True):
             go("games")
     with c3:
-        if st.button("ℹ️ Cómo funciona", use_container_width=True):
+        if st.button("Cómo funciona", use_container_width=True):
             go("how")
 
     st.stop()
@@ -303,7 +303,7 @@ if st.session_state.page == "coach":
             go("home")
             st.stop()
     with top[1]:
-        st.markdown("# ⚽ CoachAI")
+        st.markdown("# CoachAI")
 
     # Cargar datos/modelo
     try:
@@ -476,7 +476,7 @@ if st.session_state.page == "coach":
     else:
         regla_pases = "mínimo 9 pases antes de finalizar"
 
-    st.markdown("### 🎯 Objetivo")
+    st.markdown("### Objetivo")
     st.write(
         f"Entrenar el patrón **Plan A**: **{jugadaA} por {zonaA}** con **{grupoA}** (regla: {regla_pases})."
     )
@@ -592,7 +592,7 @@ if st.session_state.page == "coach":
     st.write(f"**{t['cool']} min** — Trote suave + movilidad + estiramientos.")
     st.write("Cierre: 2 minutos de reflexión (qué funcionó, qué ajustar).")
 
-    st.markdown("### 🧪 Indicadores (para tu evaluación)")
+    st.markdown("### Indicadores (para tu evaluación)")
     st.write("- % de acciones que terminan en tiro cuando se intenta el Plan A.")
     st.write("- Cumplimiento de zona y regla de pases.")
     st.write("- Comparación entre 2 sesiones distintas (otra variante).")
@@ -610,7 +610,7 @@ if st.session_state.page == "games":
             go("home")
             st.stop()
     with top[1]:
-        st.markdown("# 🎮 Minijuegos")
+        st.markdown("# Minijuegos")
 
     try:
         df = load_data(DATA_PATH)
@@ -628,7 +628,7 @@ if st.session_state.page == "games":
 
     st.info(f"Puntos: **{st.session_state.score}** | Racha: **{st.session_state.streak}**")
 
-    tab1, tab2 = st.tabs(["🧠 Quiz táctico", "🎯 Adivina la probabilidad"])
+    tab1, tab2 = st.tabs(["Quiz táctico", " Adivina la probabilidad"])
 
     with tab1:
         st.subheader("Quiz táctico (varía en cada intento)")
@@ -801,32 +801,33 @@ if st.session_state.page == "how":
             go("home")
             st.stop()
     with top[1]:
-        st.markdown("# ℹ️ Cómo funciona CoachAI")
+        st.markdown("# Cómo funciona CoachAI")
 
-    with st.expander("📦 Datos (dataset)"):
+    with st.expander("Datos (dataset)"):
         st.write("- Fuente: jugadas anotadas en Excel.")
         st.write("- Variables: liga, equipo, zona, tipo de jugada y número de pases.")
         st.write("- Etiqueta: **finaliza** (tiro o gol) / **no_finaliza** (pérdida).")
 
-    with st.expander("🧠 Modelo (Machine Learning)"):
-        st.write("- Modelo usado: **Logistic Regression** (clasificación).")
+    with st.expander(" Modelo (Machine Learning)"):
+        st.write("- Modelo usado: **Logistic Regression** (clasificación ).")
         st.write("- Las variables categóricas se convierten en números (OneHotEncoder).")
         st.write("- Entrena con ejemplos y luego predice para nuevas jugadas.")
 
-    with st.expander("📊 Recomendación + validación"):
+    with st.expander(" Recomendación + validación"):
         st.write("- La recomendación sale de los **datos**: qué combinaciones finalizan más (zona + jugada + grupo de pases).")
         st.write("- El perfil del equipo filtra lo que tiene sentido.")
         st.write("- Luego el modelo calcula una probabilidad para Plan A y Plan B.")
 
-    with st.expander("⚠️ Limitaciones"):
+    with st.expander("Limitaciones"):
         st.write("- Pocas variables: faltan posiciones exactas, rival, fatiga, contexto, etc.")
         st.write("- Datos manuales: puede haber sesgo o errores de anotación.")
-        st.write("- Por eso es más fiable como **recomendador/analizador** que como predictor perfecto.")
+        st.write("- Por eso es más fiable como herramienta de apoyo que funciona como **recomendador/analizador** que como predictor perfecto.")
 
-    with st.expander("🚀 Mejoras futuras"):
+    with st.expander(" Mejoras futuras"):
         st.write("- Añadir variables más informativas (baratas de anotar): zona final, tipo de último pase, superioridad numérica, altura de recuperación.")
         st.write("- Más jugadas y mejor equilibrio de clases.")
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
+
 

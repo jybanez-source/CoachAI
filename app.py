@@ -75,13 +75,35 @@ footer{visibility:hidden;}
 }
 
 /* ====== INPUTS (pizarra incluida) ====== */
-textarea, input, select{
-  background-color: rgba(255,255,255,0.06) !important;
-  color:#e5e7eb !important;
-  border: 1px solid rgba(148,163,184,0.22) !important;
-  border-radius: 12px !important;
+/* ====== FIX SELECTBOX / INPUT / TEXTAREA STREAMLIT ====== */
+
+/* Selectbox (Ritmo, Fortaleza, Estilo) */
+div[data-baseweb="select"] > div {
+  background-color: rgba(255,255,255,0.08) !important;
+  color: #ffffff !important;
 }
 
+/* Texto dentro del select */
+div[data-baseweb="select"] span {
+  color: #ffffff !important;
+}
+
+/* Text area (Pizarra libre) */
+div[data-baseweb="textarea"] textarea {
+  background-color: rgba(255,255,255,0.08) !important;
+  color: #ffffff !important;
+  caret-color: #ffffff !important;
+}
+
+/* Checkbox label */
+div[data-testid="stCheckbox"] label {
+  color: #ffffff !important;
+}
+
+/* Slider label */
+div[data-testid="stSlider"] label {
+  color: #ffffff !important;
+}
 /* ====== EXPANDERS (“Cómo funciona”) ====== */
 /* Barra del expander */
 [data-testid="stExpander"]{
@@ -914,6 +936,7 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
+
 
 
 

@@ -15,7 +15,7 @@ st.markdown("""
 <style>
 /* Fondo verde oscuro elegante */
 .stApp {
-    background: linear-gradient(135deg, #0f2a22 0%, #b1f19 100%);
+    background: linear-gradient(135deg, #14342b 0%, #0f2a22 100%);
     color: #e5e7eb;
 }
 
@@ -887,4 +887,5 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
+
 

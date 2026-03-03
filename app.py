@@ -13,98 +13,125 @@ st.set_page_config(page_title="CoachAI", layout="wide")
 # SOLO CAMBIA ESTILO (NO CONTENIDO)
 st.markdown("""
 <style>
-/* Fondo verde oscuro elegante */
-.stApp {
-    background: linear-gradient(135deg, #071a13 0%, #04120d 100%);
-    color: #e5e7eb;
+/* ====== BASE ====== */
+.stApp{
+  background: linear-gradient(135deg, #0f2a22 0%, #0b1f19 100%);
+  color: #e5e7eb !important;
 }
 
-/* Quitar header/footer */
-header {visibility: hidden;}
-footer {visibility: hidden;}
+/* Ocultar header/footer */
+header{visibility:hidden;}
+footer{visibility:hidden;}
 
-/* HOME: título centrado + más grande */
-.hero-title {
-    text-align: center;
-    font-size: 56px;
-    font-weight: 800;
-    margin-top: 18px;
-    margin-bottom: 10px;
-    letter-spacing: 0.5px;
+/* Forzar color de texto en TODO (evita “blancos” raros según navegador) */
+.stApp, .stApp *{
+  color: #e5e7eb;
 }
 
-/* HOME: cita más grande */
-.hero-quote {
-    text-align: center;
-    font-size: 20px;
-    color: #93c5fd; /* azul suave */
-    font-style: italic;
-    margin-top: 8px;
-    margin-bottom: 16px;
+/* Enlaces */
+.stApp a{ color:#93c5fd !important; }
+
+/* Negritas y porcentajes */
+.stApp b, .stApp strong{
+  color:#ffffff !important;
+  font-weight: 700 !important;
 }
 
-/* HOME: frase “La herramienta…” más grande */
-.hero-desc {
-    font-size: 20px;
-    font-weight: 600;
-    color: #e5e7eb;
-    margin-top: 6px;
-    margin-bottom: 4px;
+/* ====== HOME TIPOGRAFÍA ====== */
+.hero-title{
+  text-align:center;
+  font-size:56px;
+  font-weight:800;
+  margin-top:18px;
+  margin-bottom:10px;
+  letter-spacing:0.5px;
+  color:#ffffff !important;
+}
+.hero-quote{
+  text-align:center;
+  font-size:20px;
+  color:#93c5fd !important;
+  font-style:italic;
+  margin-top:8px;
+  margin-bottom:16px;
+}
+.hero-desc{
+  font-size:20px;
+  font-weight:600;
+  color:#e5e7eb !important;
+  margin-top:6px;
+  margin-bottom:4px;
 }
 
-/* Tarjetas (opcional, NO afecta al contenido) */
-.card {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(148,163,184,0.22);
-    border-radius: 16px;
-    padding: 16px 16px;
-    box-shadow: 0 10px 26px rgba(0,0,0,0.25);
+/* ====== MÉTRICAS ====== */
+[data-testid="metric-container"]{
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(148,163,184,0.22);
+  padding: 12px;
+  border-radius: 16px;
+}
+[data-testid="metric-container"] *{
+  color:#ffffff !important;
 }
 
-/* Botones: los dejo como estaban (solo estilo coherente) */
-div.stButton > button {
-    border-radius: 12px;
-    background-color: #2563eb;
-    color: white;
-    border: 1px solid #2563eb;
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
-    font-weight: 600;
-}
-div.stButton > button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 18px rgba(37, 99, 235, 0.20);
+/* ====== INPUTS (pizarra incluida) ====== */
+textarea, input, select{
+  background-color: rgba(255,255,255,0.06) !important;
+  color:#e5e7eb !important;
+  border: 1px solid rgba(148,163,184,0.22) !important;
+  border-radius: 12px !important;
 }
 
-/* Unificar inputs para que la pizarra NO “cambie de color” */
-textarea, input, select {
-    background-color: rgba(255,255,255,0.06) !important;
-    color: #e5e7eb !important;
-    border: 1px solid rgba(148,163,184,0.22) !important;
-    border-radius: 12px !important;
+/* ====== EXPANDERS (“Cómo funciona”) ====== */
+/* Barra del expander */
+[data-testid="stExpander"]{
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(148,163,184,0.22) !important;
+  border-radius: 14px !important;
+}
+[data-testid="stExpander"] summary{
+  background: rgba(255,255,255,0.06) !important;
+  border-radius: 14px !important;
+}
+/* Texto del título del expander */
+[data-testid="stExpander"] summary *{
+  color:#ffffff !important;
+  font-weight:700 !important;
+}
+/* Contenido desplegado */
+[data-testid="stExpander"] div, 
+[data-testid="stExpander"] p, 
+[data-testid="stExpander"] li{
+  color:#e5e7eb !important;
 }
 
-/* Métricas con fondo coherente */
-[data-testid="metric-container"] {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(148,163,184,0.22);
-    padding: 12px;
-    border-radius: 16px;
+/* ====== SIDEBAR (por si en algún momento la usas) ====== */
+section[data-testid="stSidebar"]{
+  background: rgba(255,255,255,0.04) !important;
+  border-right: 1px solid rgba(148,163,184,0.18) !important;
+}
+section[data-testid="stSidebar"] *{
+  color:#e5e7eb !important;
 }
 
-/* Expanders coherentes */
-details {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(148,163,184,0.22);
-    border-radius: 14px;
-    padding: 6px 10px;
+/* ====== BOTONES (igual que tenías) ====== */
+div.stButton > button{
+  border-radius:12px;
+  background-color:#2563eb;
+  color:white !important;
+  border:1px solid #2563eb;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  font-weight:600;
+}
+div.stButton > button:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(37,99,235,0.20);
 }
 </style>
 """, unsafe_allow_html=True)
 
 DATA_PATH = "jugadas_futbol.xlsx"
 MODEL_PATH = "modelo_final.joblib"
-
-
 # =========================
 # ROUTER
 # =========================
@@ -887,6 +914,7 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
+
 
 
 

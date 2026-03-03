@@ -10,45 +10,69 @@ import streamlit as st
 st.set_page_config(page_title="CoachAI", layout="wide")
 
 # --- SILICON VALLEY THEME (CSS) ---
-st.markdown(
-    """
+st.markdown("""
 <style>
+/* Fondo claro elegante */
 .stApp {
-    background: linear-gradient(135deg, #0f172a 0%, #0b1120 100%);
-    color: white;
+    background: #f7f7fb;
+    color: #0f172a;
 }
+
+/* Quitar header/footer */
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
-h1, h2, h3 {
-    font-weight: 700;
-    letter-spacing: 0.4px;
+/* Títulos centrados elegantes */
+.hero-title {
+    text-align: center;
+    font-size: 52px;
+    font-weight: 800;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    letter-spacing: 0.5px;
+}
+.hero-subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #334155;
+    margin-top: 6px;
+    margin-bottom: 18px;
 }
 
+/* Frase destacada */
+.hero-quote {
+    text-align: center;
+    font-size: 18px;
+    color: #2563eb;
+    font-style: italic;
+    margin-top: 10px;
+    margin-bottom: 22px;
+}
+
+/* Tarjetas */
+.card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 16px 16px;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+/* Botones más elegantes */
 div.stButton > button {
     border-radius: 12px;
-    background-color: #111827;
-    color: white;
-    border: 1px solid #1f2937;
-    transition: all 0.15s ease-in-out;
-    padding: 0.65rem 1rem;
-}
-
-div.stButton > button:hover {
     background-color: #2563eb;
-    border-color: #2563eb;
-    transform: translateY(-1px);
+    color: white;
+    border: 1px solid #2563eb;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    font-weight: 600;
 }
-
-[data-testid="metric-container"] {
-    background-color: rgba(17, 24, 39, 0.85);
-    border: 1px solid #1f2937;
-    padding: 12px;
-    border-radius: 14px;
+div.stButton > button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(37, 99, 235, 0.20);
 }
 </style>
-""",
-    unsafe_allow_html=True,
+""", unsafe_allow_html=True)
 )
 
 DATA_PATH = "jugadas_futbol.xlsx"
@@ -64,6 +88,7 @@ if "page" not in st.session_state:
 
 def go(page: str):
     st.session_state.page = page
+    st.rerun()
 
 
 # =========================
@@ -829,6 +854,7 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
+
 
 
 

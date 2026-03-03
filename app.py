@@ -9,56 +9,59 @@ import streamlit as st
 # =========================
 st.set_page_config(page_title="CoachAI", layout="wide")
 
-# --- SILICON VALLEY THEME (CSS) ---
+# --- THEME (VERDE OSCURO ELEGANTE) ---
+# SOLO CAMBIA ESTILO (NO CONTENIDO)
 st.markdown("""
 <style>
-/* Fondo claro elegante */
+/* Fondo verde oscuro elegante */
 .stApp {
-    background: #f7f7fb;
-    color: #0f172a;
+    background: linear-gradient(135deg, #071a13 0%, #04120d 100%);
+    color: #e5e7eb;
 }
 
 /* Quitar header/footer */
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
-/* Títulos centrados elegantes */
+/* HOME: título centrado + más grande */
 .hero-title {
     text-align: center;
-    font-size: 52px;
+    font-size: 56px;
     font-weight: 800;
-    margin-top: 20px;
-    margin-bottom: 0px;
+    margin-top: 18px;
+    margin-bottom: 10px;
     letter-spacing: 0.5px;
 }
-.hero-subtitle {
-    text-align: center;
-    font-size: 18px;
-    color: #334155;
-    margin-top: 6px;
-    margin-bottom: 18px;
-}
 
-/* Frase destacada */
+/* HOME: cita más grande */
 .hero-quote {
     text-align: center;
-    font-size: 18px;
-    color: #2563eb;
+    font-size: 20px;
+    color: #93c5fd; /* azul suave */
     font-style: italic;
-    margin-top: 10px;
-    margin-bottom: 22px;
+    margin-top: 8px;
+    margin-bottom: 16px;
 }
 
-/* Tarjetas */
+/* HOME: frase “La herramienta…” más grande */
+.hero-desc {
+    font-size: 20px;
+    font-weight: 600;
+    color: #e5e7eb;
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
+
+/* Tarjetas (opcional, NO afecta al contenido) */
 .card {
-    background: white;
-    border: 1px solid #e5e7eb;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(148,163,184,0.22);
     border-radius: 16px;
     padding: 16px 16px;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.25);
 }
 
-/* Botones más elegantes */
+/* Botones: los dejo como estaban (solo estilo coherente) */
 div.stButton > button {
     border-radius: 12px;
     background-color: #2563eb;
@@ -70,6 +73,30 @@ div.stButton > button {
 div.stButton > button:hover {
     transform: translateY(-1px);
     box-shadow: 0 10px 18px rgba(37, 99, 235, 0.20);
+}
+
+/* Unificar inputs para que la pizarra NO “cambie de color” */
+textarea, input, select {
+    background-color: rgba(255,255,255,0.06) !important;
+    color: #e5e7eb !important;
+    border: 1px solid rgba(148,163,184,0.22) !important;
+    border-radius: 12px !important;
+}
+
+/* Métricas con fondo coherente */
+[data-testid="metric-container"] {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(148,163,184,0.22);
+    padding: 12px;
+    border-radius: 16px;
+}
+
+/* Expanders coherentes */
+details {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(148,163,184,0.22);
+    border-radius: 14px;
+    padding: 6px 10px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -265,16 +292,23 @@ if "plan_seed" not in st.session_state:
 # PAGE: HOME
 # =========================
 if st.session_state.page == "home":
-    st.markdown("# Bienvenido a la revolución del fútbol")
+    # MISMO CONTENIDO, SOLO FORMATO (centrado + más grande)
+    st.markdown('<div class="hero-title">Bienvenido a la revolución del fútbol</div>', unsafe_allow_html=True)
 
     st.markdown(
         """
-> *"La innovación y el análisis hacen mejor a los jugadores."*  
-> — **Pep Guardiola**
-"""
+<div class="hero-quote">
+"La innovación y el análisis hacen mejor a los jugadores."  
+— Pep Guardiola
+</div>
+""",
+        unsafe_allow_html=True,
     )
 
-    st.markdown("### La herramienta que usa IA para generar planes de entreamiento y tácticas, con minijuegos para aprender  .")
+    st.markdown(
+        '<div class="hero-desc">La herramienta que usa IA para generar planes de entreamiento y tácticas, con minijuegos para aprender  .</div>',
+        unsafe_allow_html=True,
+    )
     st.caption("Una plataforma que ofrece análisis táctico para obtener ventajas competitivas.")
     st.write("")
 
@@ -853,8 +887,3 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
-
-
-
-
-

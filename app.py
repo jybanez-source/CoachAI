@@ -73,7 +73,6 @@ div.stButton > button:hover {
 }
 </style>
 """, unsafe_allow_html=True)
-)
 
 DATA_PATH = "jugadas_futbol.xlsx"
 MODEL_PATH = "modelo_final.joblib"
@@ -854,6 +853,7 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
+
 
 
 

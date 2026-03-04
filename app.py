@@ -149,6 +149,34 @@ div.stButton > button:hover{
   transform: translateY(-1px);
   box-shadow: 0 10px 18px rgba(37,99,235,0.20);
 }
+
+/* ====== PIZARRA LIBRE ====== */
+div[data-baseweb="textarea"] textarea {
+    background-color: #163a31 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(148,163,184,0.35) !important;
+    border-radius: 12px !important;
+}
+
+/* Placeholder */
+div[data-baseweb="textarea"] textarea::placeholder {
+    color: #cbd5e1 !important;
+}
+
+/* ====== BOTÓN DESCARGAR PIZARRA ====== */
+div.stDownloadButton > button {
+    background-color: #115e59 !important;
+    color: #ffffff !important;
+    border: 1px solid #0d9488 !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+}
+
+/* Hover */
+div.stDownloadButton > button:hover {
+    background-color: #0d9488 !important;
+    border: 1px solid #14b8a6 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -936,6 +964,7 @@ if st.session_state.page == "how":
         st.write("- Pizarra avanzada (arrastrar jugadores/dibujar) con una librería específica si se permite.")
 
     st.stop()
+
 
 
 
